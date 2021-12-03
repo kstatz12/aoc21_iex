@@ -8,14 +8,16 @@ defmodule Day2 do
     |> File.read!()
     |> String.split("\n", trim: true)
     |> Enum.map(fn x -> String.split(x, " ", trim: true) end)
-    |> Enum.map(fn x -> Enum.chunk_every(x, 2) |> Map.new(fn [k, v] -> {k, v} end) end)
+    |> Enum.map(fn x ->
+      Enum.chunk_every(x, 2) |> Map.new(fn [k, v] -> {k, String.to_integer(v)} end)
+    end)
   end
 
   def solve([h | t], {x, y}) do
     case h do
-      %{"forward" => m} -> solve(t, {x + String.to_integer(m), y})
-      %{"up" => m} -> solve(t, {x, y - String.to_integer(m)})
-      %{"down" => m} -> solve(t, {x, y + String.to_integer(m)})
+      %{"forward" => m} -> solve(t, {x + m, y})
+      %{"up" => m} -> solve(t, {x, y - m})
+      %{"down" => m} -> solve(t, {x, y + m})
     end
   end
 
@@ -25,9 +27,9 @@ defmodule Day2 do
 
   def solve([h | t], {x, y, z}) do
     case h do
-      %{"forward" => m} -> solve(t, {x + String.to_integer(m), y + z * String.to_integer(m), z})
-      %{"up" => m} -> solve(t, {x, y, z - String.to_integer(m)})
-      %{"down" => m} -> solve(t, {x, y, z + String.to_integer(m)})
+      %{"forward" => m} -> solve(t, {x + m, y + z * m, z})
+      %{"up" => m} -> solve(t, {x, y, z - m})
+      %{"down" => m} -> solve(t, {x, y, z + m})
     end
   end
 
