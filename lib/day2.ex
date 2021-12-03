@@ -13,24 +13,32 @@ defmodule Day2 do
     end)
   end
 
-  def solve([h | t], {x, y}) do
-    case h do
-      %{"forward" => m} -> solve(t, {x + m, y})
-      %{"up" => m} -> solve(t, {x, y - m})
-      %{"down" => m} -> solve(t, {x, y + m})
-    end
+  def solve([%{"forward" => m} | t], {x, y}) do
+    solve(t, {x + m, y})
+  end
+
+  def solve([%{"up" => m} | t], {x, y}) do
+    solve(t, {x, y - m})
+  end
+
+  def solve([%{"down" => m} | t], {x, y}) do
+    solve(t, {x, y + m})
+  end
+
+  def solve([%{"forward" => m} | t], {x, y, z}) do
+    solve(t, {x + m, y + z * m, z})
+  end
+
+  def solve([%{"up" => m} | t], {x, y, z}) do
+    solve(t, {x, y, z - m})
+  end
+
+  def solve([%{"down" => m} | t], {x, y, z}) do
+    solve(t, {x, y, z + m})
   end
 
   def solve([], {x, y}) do
     x * y
-  end
-
-  def solve([h | t], {x, y, z}) do
-    case h do
-      %{"forward" => m} -> solve(t, {x + m, y + z * m, z})
-      %{"up" => m} -> solve(t, {x, y, z - m})
-      %{"down" => m} -> solve(t, {x, y, z + m})
-    end
   end
 
   def solve([], {x, y, _}) do
